@@ -664,6 +664,7 @@ public:
     }
     void    addChannels(const char *, Channel **, int);
     void    addChannel(const char *, ChanInfo &);
+    void    addChannel(const char *path, ChanInfo &info, const char* tip);
 
     void    writeSCPLS(Stream &);
     void    writePLS(Stream &);

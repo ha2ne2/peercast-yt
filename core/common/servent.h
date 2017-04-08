@@ -17,7 +17,6 @@
 // GNU General Public License for more details.
 // ------------------------------------------------
 
-
 #ifndef _SERVENT_H
 #define _SERVENT_H
 
@@ -82,7 +81,6 @@ public:
         P_PCP
     };
 
-
     enum SORT
     {
         SORT_NAME = 0,
@@ -114,9 +112,6 @@ public:
 
     void    checkFree();
 
-
-
-
     //  funcs for handling status/type
     void                setStatus(STATUS);
     static const char   *getTypeStr(Servent::TYPE t) { return typeMsgs[t]; }
@@ -134,8 +129,6 @@ public:
             return true;
     }
 
-
-
     // static funcs that do the actual work in the servent thread
     static THREAD_PROC  serverProc(ThreadInfo *);
     static THREAD_PROC  outgoingProc(ThreadInfo *);
@@ -148,18 +141,12 @@ public:
 
     bool    getLocalURL(char *);
 
-    // various types of handshaking are needed
-    void    handshakePLS(ChanHitList **, int, bool);
-    void    handshakePLS(ChanInfo &, bool);
-
     void    handshakeHTML(char *);
     void    handshakeXML();
-    void    handshakeCMD(char *);
-    bool    handshakeAuth(HTTP &, const char *, bool);
     void    handshakeIn();
     void    handshakeOut();
 
-    bool    handshakeHTTPBasicAuth(HTTP &http);
+    static void readICYHeader(HTTP &, ChanInfo &, char *, size_t);
 
     void    processOutPCP();
     void    processOutChannel();
@@ -167,16 +154,10 @@ public:
     bool    handshakeStream(ChanInfo &);
     void    handshakeGiv(GnuID &);
 
-    void    handshakeICY(Channel::SRC_TYPE, bool);
     void    handshakeIncoming();
+
     void    handshakePOST();
     void    handshakeRTSP(RTSP &);
-    void    handshakeHTTP(HTTP &, bool);
-
-    void    handshakeJRPC(HTTP &http);
-
-    void    handshakeRemoteFile(const char *);
-    void    handshakeLocalFile(const char *);
 
     static void handshakeOutgoingPCP(AtomStream &, Host &, GnuID &, String &, bool);
     static void handshakeIncomingPCP(AtomStream &, Host &, GnuID &, String &);
@@ -209,7 +190,6 @@ public:
     void    sendPCPChannel();
     void    checkPCPComms(Channel *, AtomStream &);
 
-    static void readICYHeader(HTTP &, ChanInfo &, char *, size_t);
     bool    canStream(Channel *);
 
     bool    isConnected() { return status == S_CONNECTED; }
@@ -280,31 +260,6 @@ public:
 
     PCPStream           *pcpStream;
     Cookie              cookie;
-
-private:
-    void CMD_redirect(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_viewxml(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_clearlog(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_save(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_reg(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_edit_bcid(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_add_bcid(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_apply(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_fetch(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_stopserv(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_hitlist(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_clear(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_upgrade(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_connect(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_shutdown(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_stop(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_bump(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_keep(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_relay(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_net_add(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_logout(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-    void CMD_login(char *cmd, HTTP& http, HTML& html, char jumpStr[]);
-
 };
 
 extern char *nextCGIarg(char *cp, char *cmd, char *arg);

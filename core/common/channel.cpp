@@ -3877,19 +3877,26 @@ void PlayList::writeASX(Stream &out)
     out.writeLine("</ASX>");
 }
 
+// -----------------------------------
+void PlayList::addChannel(const char *path, ChanInfo &info, const char* tip)
+{
+    char idStr[64];
+    info.id.toStr(idStr);
+    char *nid = info.id.isSet() ? idStr : info.name.cstr();
+
+    String url;
+    if (tip == nullptr)
+        url = String::format("%s/stream/%s%s", path, nid, info.getTypeExt());
+    else
+        url = String::format("%s/stream/%s%s?tip=%s", path, nid, info.getTypeExt(), tip);
+
+    addURL(url.cstr(), info.name);
+}
 
 // -----------------------------------
 void PlayList::addChannel(const char *path, ChanInfo &info)
 {
-    String url;
-
-    char idStr[64];
-
-    info.id.toStr(idStr);
-    char *nid = info.id.isSet()?idStr:info.name.cstr();
-
-    sprintf(url.cstr(), "%s/stream/%s%s", path, nid, info.getTypeExt());
-    addURL(url.cstr(), info.name);
+    addChannel(path, info, nullptr);
 }
 
 // -----------------------------------

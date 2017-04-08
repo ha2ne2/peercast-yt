@@ -1583,7 +1583,6 @@ void ServMgr::procConnectArgs(char *str, ChanInfo &info)
 
     if (args)
     {
-
         while (args=nextCGIarg(args, curr, arg))
         {
             LOG_DEBUG("cmd: %s, arg: %s", curr, arg);
@@ -1624,8 +1623,6 @@ void ServMgr::procConnectArgs(char *str, ChanInfo &info)
                 h.fromStrName(arg, DEFAULT_PORT);
                 chanMgr->addHit(h, info.id, true);
             }
-
-
         }
     }
 }
